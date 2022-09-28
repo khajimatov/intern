@@ -24,15 +24,16 @@
 </head>
 
 <body>
-    <h1>Список заказов</h1>
+    <h1>Магазин кроссовок</h1>
     <p>Количество заказов: <span id="ordCount">0</span></p>
     <h3 id="listTitle" style="display:none;"></h3>
     <ol id="list"></ol>
-    <button id="renderOrders" onclick="renderOrders()">Обновить список заказов</button>
+    <button id="renderItems" onclick="renderItems()">Вывести список заказов</button>
 </body>
 
 <script>
     function fetchData(method, URL, body = null) {
+
         return new Promise((res, rej) => {
             let xhr = new XMLHttpRequest();
             xhr.open(method, URL)
@@ -47,61 +48,75 @@
             }
 
             xhr.onload = function () {
-                xhr.status != 200 && rej(`Не удалось достучиться до сервера Ошибка ${xhr.status}: ${xhr.statusText}`)
+                xhr.status != 200 && rej(`Не удалось достучиться до сервера, ошибка ${xhr.status}: ${xhr.statusText}`)
                 res(xhr.response)
             };
         })
 
     }
-    async function renderOrders() {
+    async function renderItems() {
 
         const response = await fetchData('GET', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders').then(res => res)
+
+        const renderButton = document.querySelector('#renderItems')
+        renderButton.setAttribute("disabled", "disabled")
 
         document.getElementById('ordCount').innerText = response.length;
 
         const h3 = document.getElementById('listTitle')
         h3.style.display = "";
-        h3.innerText = response.length > 0 ? "Вот их список" : "Нету заказов"
+        h3.innerText = response.length > 0 ? "Список заказов:" : "Заказов нет :("
 
-        const elems = response.map(element => `<li value="${element.id}">${element.title}<div class="divs" style="display: none;"><button title="Удалить" onclick="deleteItem()">X</button><button title="Добавить">+</button><button title="Редактировать">~</button></div></li>`);
+        const elems = response.map(element => `<li value="${element.id}">${element.title}<div class="container" style="display: none;"><button id="buttonDelete" title="Удалить" onclick="deleteItem()">X</button><button id="buttonAdd" title="Добавить">+</button><button id="buttonEdit" title="Редактировать">~</button></div></li>`);
         document.getElementById('list').innerHTML = elems.join('');
+
     }
 
     function addItem() {
+
         let title = { "title": document.getElementById("title").value };
         let json = JSON.stringify(title)
         fetchData('POST', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders', json).then(res => res)
         let node = document.createElement('li');
         node.appendChild(document.createTextNode(title.title));
         document.getElementById('list').appendChild(node);
+
     }
-    function editInfo() {
+    function editItem() {
+
         let obj = { "title": document.getElementById("EditTitle").value, "id": document.getElementById("EditId").value };
         let json = JSON.stringify(obj)
         fetchData('PUT', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
         let lItems = document.getElementsByTagName("li");
         lItems[obj.id - 1].innerHTML = obj.title;
+
     }
     async function deleteItem(liNum, i) {
+
         liNum.toString();
         let obj = { "id": liNum };
         let json = JSON.stringify(obj)
         let lItems = document.getElementsByTagName("li");
         lItems[i].remove();
         await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
-        renderOrders();
+        renderItems();
+
     }
+
+    // Проверяет наличие наведения курсора на <li>
     setInterval(() => {
+
         lis = document.querySelectorAll('li')
         for (let i = 0; i < lis.length; i++) {
             if (lis[i].matches(':hover')) {
-                lis[i].querySelector('.divs').style.display = "inline";
-                lis[i].querySelector('.divs').querySelector('button').onclick = () => { deleteItem(parseInt(lis[i].value), i) }
+                lis[i].querySelector('.container').style.display = "inline";
+                lis[i].querySelector('.container').querySelector('button').onclick = () => { deleteItem(parseInt(lis[i].value), i) }
                 console.log(lis[i].value)
             } else {
-                lis[i].querySelector('.divs').style.display = "none";
+                lis[i].querySelector('.container').style.display = "none";
             }
         }
+
     }, 0)
 </script>
 
