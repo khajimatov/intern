@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMLHttpsRequest</title>
+    <style>
+        li:hover {
+            color: red;
+        }
+
+        li {
+            height: 50px;
+        }
+
+        li button {
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Список заказов</h1>
+    <p>В корзине есть <span id="ordCount">0</span> заказов</p>
+    <button id="renderOrders" onclick="renderOrders()">Обновить список заказов</button>
+    <div id="listTitle"></div>
+    <ol id="list"></ol>
+    <br>
+    <input type="text" id="EditId" placeholder="id of item">
+    <input type="text" id="EditTitle" placeholder="new title">
+    <button onclick="editInfo()">Изменить данные</button>
+    <br>
+    <br>
+    <br>
+    <input type="text" id="DeleteId" placeholder="id of item">
+    <button onclick="deleteItem()">Удалить элемент</button>
+    <br>
+    <br>
+    <br>
+</body>
+
+<script>
+    function fetchData(method, URL, body = null) {
+        return new Promise((res, rej) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method, URL)
+            if (method === 'GET') {
+                xhr.responseType = 'json'
+                xhr.send()
+            } else {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.responseType = 'json'
+                xhr.send(body)
+            }
+
+            xhr.onload = function () {
+                xhr.status != 200 && rej(`Не удалось достучиться до сервера Ошибка ${xhr.status}: ${xhr.statusText}`)
+                res(xhr.response)
+            };
+        })
+
+    }
+    async function renderOrders() {
+
+        document.getElementById('renderOrders').remove()
+
+        const response = await fetchData('GET', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders').then(res => res)
+
+        document.getElementById('ordCount').innerText = response.length;
+
+        const h3 = document.createElement("h3");
+        h3.innerText = response.length > 0 ? "Вот их список" : "Нету заказов"
+        document.getElementById('listTitle').appendChild(h3);
+
+        const elems = response.map(element => `<li value="${element.id}">${element.title}<div class="divs" style="display: none;"><button onclick="deleteItem()">X</button></div></li>`);
+        document.getElementById('list').innerHTML = elems.join('');
+
+        let btn = document.createElement("button");
+        btn.innerHTML = "Добавить заказ";
+        btn.onclick = () => {
+            addItem();
+        }
+
+        let input = document.createElement("input")
+        input.setAttribute('id', 'title')
+        input.setAttribute('placeholder', 'add title for new item')
+
+        document.body.appendChild(input)
+        document.body.appendChild(btn)
+    }
+
+    async function addItem() {
+        let title = { "title": document.getElementById("title").value };
+        let json = JSON.stringify(title)
+        fetchData('POST', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders', json).then(res => res)
+        let node = document.createElement('li');
+        node.appendChild(document.createTextNode(title.title));
+        document.getElementById('list').appendChild(node);
+    }
+    function editInfo() {
+        let obj = { "title": document.getElementById("EditTitle").value, "id": document.getElementById("EditId").value };
+        let json = JSON.stringify(obj)
+        fetchData('PUT', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
+        let lItems = document.getElementsByTagName("li");
+        lItems[obj.id - 1].innerHTML = obj.title;
+    }
+    async function deleteItem(liNum, i) {
+        liNum.toString();
+        let obj = { "id": liNum };
+        let json = JSON.stringify(obj)
+        let lItems = document.getElementsByTagName("li");
+        lItems[i].remove();
+        await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
+        renderOrders();
+    }
+    setInterval(() => {
+        lis = document.querySelectorAll('li')
+        for (let i = 0; i < lis.length; i++) {
+            if (lis[i].matches(':hover')) {
+                lis[i].querySelector('.divs').style.display = "inline";
+                lis[i].querySelector('.divs').querySelector('button').onclick = () => { deleteItem(parseInt(lis[i].value), i) }
+                console.log(lis[i].value)
+            } else {
+                lis[i].querySelector('.divs').style.display = "none";
+            }
+        }
+    }, 0)
+</script>
+
+</html>
