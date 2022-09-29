@@ -67,34 +67,69 @@
         h3.style.display = "";
         h3.innerText = response.length > 0 ? "Список заказов:" : "Заказов нет :("
 
-        const elems = response.map(element => `<li value="${element.id}">${element.title}<div class="container" style="display: none;"><button id="buttonDelete" title="Удалить" onclick="deleteItem()">X</button><button id="buttonAdd" title="Добавить">+</button><button id="buttonEdit" title="Редактировать">~</button></div></li>`);
+        const elems = response.map(element => `<li value="${element.id}"><span id="listText">${element.title}</span><div class="container" style="display: none;"><button id="buttonDelete" title="Удалить" onclick="deleteItem()">X</button><button id="buttonAdd" title="Добавить" onclick="addItem()">+</button><button id="buttonEdit" title="Редактировать" onclick="editItem()">~</button></div></li>`);
         document.getElementById('list').innerHTML = elems.join('');
 
     }
 
     function addItem() {
 
-        let title = { "title": document.getElementById("title").value };
-        let json = JSON.stringify(title)
-        fetchData('POST', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders', json).then(res => res)
-        let node = document.createElement('li');
-        node.appendChild(document.createTextNode(title.title));
-        document.getElementById('list').appendChild(node);
+
+        const ol = document.querySelector("#list");
+        const inputBox = document.createElement('input');
+        const buttonAddItem = document.createElement('button');
+
+        buttonAddItem.textContent = "Добавить";
+        ol.appendChild(inputBox)
+        inputBox.after(buttonAddItem)
+
+
+        buttonAddItem.onclick = () => {
+            let obj = { "title": inputBox.value };
+            let json = JSON.stringify(obj)
+            fetchData('POST', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders', json).then(res => res)
+            let node = document.createElement('li');
+            node.appendChild(document.createTextNode(inputBox.value));
+            document.getElementById('list').appendChild(node);
+            buttonAddItem.style.display = "none";
+            inputBox.style.display = "none";
+            renderItems();
+        }
 
     }
-    function editItem() {
+    function editItem(liId, i) {
 
-        let obj = { "title": document.getElementById("EditTitle").value, "id": document.getElementById("EditId").value };
-        let json = JSON.stringify(obj)
-        fetchData('PUT', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
-        let lItems = document.getElementsByTagName("li");
-        lItems[obj.id - 1].innerHTML = obj.title;
+        const id = i;
+        const lItems = document.getElementsByTagName("li");
+        const container = lItems[i].querySelector('.container');
+        const listText = lItems[i].querySelector('#listText');
+        const inputBox = document.createElement('input');
+        const buttonEditTitle = document.createElement('button');
+        buttonEditTitle.textContent = "Изменить";
 
+        container.style.display = "none";
+        inputBox.value = listText.textContent;
+        container.before(inputBox);
+        inputBox.after(buttonEditTitle);
+        listText.textContent = "";
+
+        buttonEditTitle.onclick = () => {
+
+            liId.toString();
+            let obj = { "title": inputBox.value, "id": liId };
+            let json = JSON.stringify(obj)
+            fetchData('PUT', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
+
+            listText.textContent = inputBox.value;
+            buttonEditTitle.style.display = "none";
+            inputBox.style.display = "none";
+        };
     }
-    async function deleteItem(liNum, i) {
 
-        liNum.toString();
-        let obj = { "id": liNum };
+    async function deleteItem(liId, i) {
+
+        liId.toString();
+        let obj = { "id": liId };
         let json = JSON.stringify(obj)
         let lItems = document.getElementsByTagName("li");
         lItems[i].remove();
@@ -110,8 +145,9 @@
         for (let i = 0; i < lis.length; i++) {
             if (lis[i].matches(':hover')) {
                 lis[i].querySelector('.container').style.display = "inline";
-                lis[i].querySelector('.container').querySelector('button').onclick = () => { deleteItem(parseInt(lis[i].value), i) }
-                console.log(lis[i].value)
+                lis[i].querySelector('.container').querySelector('#buttonDelete').onclick = () => { deleteItem(parseInt(lis[i].value), i) }
+                lis[i].querySelector('.container').querySelector('#buttonEdit').onclick = () => { editItem(parseInt(lis[i].value), i) }
+                lis[i].querySelector('.container').querySelector('#buttonAdd').onclick = () => { addItem() }
             } else {
                 lis[i].querySelector('.container').style.display = "none";
             }
