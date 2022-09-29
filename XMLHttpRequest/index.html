@@ -6,29 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XMLHttpsRequest</title>
-    <style>
-        li {
-            margin-bottom: 5px;
-        }
-
-        li:hover {
-            color: red;
-        }
-
-        li button {
-            height: 20px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-    <h1>Магазин кроссовок</h1>
-    <p>Количество заказов: <span id="ordCount">0</span></p>
-    <h3 id="listTitle" style="display:none;"></h3>
-    <ol id="list"></ol>
-    <button id="renderItems" onclick="renderItems()">Вывести список заказов</button>
+    <div class="wrapper">
+        <h1>Магазин кроссовок</h1>
+        <p>Количество заказов: <span id="ordCount">0</span></p>
+        <h3 id="listTitle" style="display:none;"></h3>
+        <div class="section1">
+            <ol id="list"></ol>
+        </div>
+        <button id="renderItems" onclick="renderItems()">Вывести список заказов</button>
+    </div>
 </body>
 
 <script>
@@ -56,10 +46,11 @@
     }
     async function renderItems() {
 
+        document.getElementById('renderItems').textContent = "Загружаю..."
         const response = await fetchData('GET', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders').then(res => res)
 
-        const renderButton = document.querySelector('#renderItems')
-        renderButton.setAttribute("disabled", "disabled")
+        const renderButton = document.querySelector('#renderItems');
+        renderButton.textContent = 'Обновить список заказов';
 
         document.getElementById('ordCount').innerText = response.length;
 
@@ -126,17 +117,25 @@
         };
     }
 
-    async function deleteItem(liId, i) {
+    async function deleteItem(liId) {
 
         liId.toString();
         let obj = { "id": liId };
         let json = JSON.stringify(obj)
         let lItems = document.getElementsByTagName("li");
-        lItems[i].remove();
+        for (let i = 0; i < lItems.length; i++) {
+            lItems[i].value === liId && lItems[i].remove()
+        }
         await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
         renderItems();
 
     }
+    document.getElementById('list').addEventListener('mouseover', (e) => {
+        if (e.target && e.target.matches('li')) {
+            e.target.querySelector('.container').style.display = "inline";
+            e.target.querySelecjtor('.container').querySelector('#buttonDelete').onclick = () => { deleteItem(parseInt(e.target.value)) }
+        }
+    })
 
     // Проверяет наличие наведения курсора на <li>
     setInterval(() => {
