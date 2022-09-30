@@ -5,7 +5,7 @@ body {
     background-color: azure;
     margin: 0;
 }
-.wrapper {
+#wrapper {
     margin: 100px;
     text-align: center;
 }
@@ -48,4 +48,7 @@ li button {
 }
 .listWrapper:hover .container{
     display: inline;
+}
+#formAddItem {
+    display: none;
 }

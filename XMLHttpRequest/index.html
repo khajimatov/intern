@@ -11,121 +11,22 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div id="wrapper">
         <h1>Магазин кроссовок</h1>
         <p>Количество заказов: <span id="ordCount">0</span></p>
         <h3 id="listTitle" style="display:none;"></h3>
         <div class="section1">
             <ol id="list"></ol>
         </div>
+
+        <div id="formAddItem">
+            <label for="newItemTitle">Введите название нового заказа</label><br>
+            <input id="newItemTitle" name="newItemTitle" type="text">
+            <button id="buttonAddItem">Добавить</button>
+        </div>
+
         <button class="renderItems">Вывести список заказов</button>
     </div>
 </body>
-
-<script>
-    function fetchData(method, URL, body = null) {
-
-        return new Promise((res, rej) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(method, URL)
-            if (method === 'GET') {
-                xhr.responseType = 'json'
-                xhr.send()
-            } else {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.responseType = 'json'
-                xhr.send(body)
-            }
-
-            xhr.onload = function () {
-                xhr.status != 200 && rej(`Не удалось достучиться до сервера, ошибка ${xhr.status}: ${xhr.statusText}`)
-                res(xhr.response)
-            };
-        })
-
-    }
-    async function renderItems() {
-
-        document.getElementsByClassName('renderItems').textContent = "Загружаю..."
-        const response = await fetchData('GET', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders').then(res => res)
-
-        const renderButton = document.querySelector('.renderItems');
-        renderButton.textContent = 'Обновить список заказов';
-
-        document.getElementById('ordCount').innerText = response.length;
-
-        const h3 = document.getElementById('listTitle')
-        h3.style.display = "";
-        h3.innerText = response.length > 0 ? "Список заказов:" : "Заказов нет :("
-
-        const elems = response.map(element => `<li id="${element.id}"><div class="listWrapper">${element.title}<div class="container"><button class="buttonDelete" title="Удалить">X</button><button class="buttonAdd" title="Добавить">+</button><button class="buttonEdit" title="Редактировать">~</button></div></div></li>`);
-        document.getElementById('list').innerHTML = elems.join('');
-
-    }
-
-    function addItem() {
-
-
-        const ol = document.querySelector("#list");
-        const inputBox = document.createElement('input');
-        const buttonAddItem = document.createElement('button');
-
-        buttonAddItem.textContent = "Добавить";
-        ol.appendChild(inputBox)
-        inputBox.after(buttonAddItem)
-
-
-        buttonAddItem.onclick = () => {
-            let obj = { "title": inputBox.value };
-            let json = JSON.stringify(obj)
-            fetchData('POST', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders', json).then(res => res)
-            let node = document.createElement('li');
-            node.appendChild(document.createTextNode(inputBox.value));
-            document.getElementById('list').appendChild(node);
-            buttonAddItem.style.display = "none";
-            inputBox.style.display = "none";
-            renderItems();
-        }
-
-    }
-    function editItem(liId, i) {
-
-        const id = i;
-        const lItems = document.getElementsByTagName("li");
-        const container = lItems[i].querySelector('.container');
-        const listText = lItems[i].querySelector('#listText');
-        const inputBox = document.createElement('input');
-        const buttonEditTitle = document.createElement('button');
-        buttonEditTitle.textContent = "Изменить";
-
-        container.style.display = "none";
-        inputBox.value = listText.textContent;
-        container.before(inputBox);
-        inputBox.after(buttonEditTitle);
-        listText.textContent = "";
-
-        buttonEditTitle.onclick = () => {
-
-            liId.toString();
-            let obj = { "title": inputBox.value, "id": liId };
-            let json = JSON.stringify(obj)
-            fetchData('PUT', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
-
-            listText.textContent = inputBox.value;
-            buttonEditTitle.style.display = "none";
-            inputBox.style.display = "none";
-        };
-    }
-
-    async function deleteItem(liId) {
-        let obj = { "id": liId };
-        let json = JSON.stringify(obj)
-        document.getElementById(liId).remove()
-        await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
-        renderItems();
-    }
-
-</script>
 
 </html>
