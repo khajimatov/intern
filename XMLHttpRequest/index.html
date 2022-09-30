@@ -18,7 +18,7 @@
         <div class="section1">
             <ol id="list"></ol>
         </div>
-        <button id="renderItems" onclick="renderItems()">Вывести список заказов</button>
+        <button class="renderItems">Вывести список заказов</button>
     </div>
 </body>
 
@@ -47,10 +47,10 @@
     }
     async function renderItems() {
 
-        document.getElementById('renderItems').textContent = "Загружаю..."
+        document.getElementsByClassName('renderItems').textContent = "Загружаю..."
         const response = await fetchData('GET', 'https://6333d285433198e79dc9c3fd.mockapi.io/orders').then(res => res)
 
-        const renderButton = document.querySelector('#renderItems');
+        const renderButton = document.querySelector('.renderItems');
         renderButton.textContent = 'Обновить список заказов';
 
         document.getElementById('ordCount').innerText = response.length;
@@ -59,7 +59,7 @@
         h3.style.display = "";
         h3.innerText = response.length > 0 ? "Список заказов:" : "Заказов нет :("
 
-        const elems = response.map(element => `<li id="${element.id}"><div class="listWrapper">${element.title}<div class="container"><button class="buttonDelete" title="Удалить">X</button><button id="buttonAdd" title="Добавить">+</button><button id="buttonEdit" title="Редактировать">~</button></div></div></li>`);
+        const elems = response.map(element => `<li id="${element.id}"><div class="listWrapper">${element.title}<div class="container"><button class="buttonDelete" title="Удалить">X</button><button class="buttonAdd" title="Добавить">+</button><button class="buttonEdit" title="Редактировать">~</button></div></div></li>`);
         document.getElementById('list').innerHTML = elems.join('');
 
     }
@@ -118,19 +118,12 @@
         };
     }
 
-    async function deleteItem(liId, i) {
-
-        liId.toString();
+    async function deleteItem(liId) {
         let obj = { "id": liId };
         let json = JSON.stringify(obj)
-        let lItems = document.getElementsByTagName("li");
-        lItems[i].remove();
-        // for (let i = 0; i < lItems.length; i++) {
-        //     lItems[i].value === liId && lItems[i].remove()
-        // }
-        // await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
-        // renderItems();
-
+        document.getElementById(liId).remove()
+        await fetchData('DELETE', `https://6333d285433198e79dc9c3fd.mockapi.io/orders/${obj.id}`, json).then(res => res).catch(rej => alert(rej))
+        renderItems();
     }
 
 </script>

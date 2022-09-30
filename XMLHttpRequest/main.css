@@ -30,7 +30,7 @@ li button {
     cursor: pointer;
     margin-left: 5px;
 }
-#renderItems, #renderItems:focus {
+.renderItems, #renderItems:focus {
     background-color: rgb(52, 110, 235);
     border: none;
     padding: 18px 22px;
@@ -42,10 +42,10 @@ li button {
     outline: none;
     text-transform: uppercase;
 }
-#renderItems:hover {
+.renderItems:hover {
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(52, 110, 235, 0.4);
 }
-#listWrapper:hover .container{
+.listWrapper:hover .container{
     display: inline;
 }
