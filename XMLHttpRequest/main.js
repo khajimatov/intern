@@ -7,10 +7,10 @@ document.addEventListener('click', (e) => {
             deleteItem(e.target.parentNode.parentNode.parentNode.id)
             break;
         case "buttonEdit":
-            console.log(e.target.parentNode.parentNode.parentNode.id)
+            editItem(e.target.parentNode.parentNode.parentNode.id)
             break;
         case "buttonAdd":
-            console.log(e.target.parentNode.parentNode.parentNode.id)
+            addItem();
             break;
     }
 })
