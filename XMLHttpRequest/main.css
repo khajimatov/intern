@@ -9,6 +9,9 @@ body {
     margin: 100px;
     text-align: center;
 }
+.container {
+    display: none;
+}
 .section1 {
     width: 300px;   
     margin: 0 auto;
@@ -19,7 +22,7 @@ li {
 }
 
 li:hover {
-    opacity: 80%;
+    font-weight: 700;
 }
 
 li button {
@@ -42,4 +45,7 @@ li button {
 #renderItems:hover {
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(52, 110, 235, 0.4);
+}
+#listWrapper:hover .container{
+    display: inline;
 }
