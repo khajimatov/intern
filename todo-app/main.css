@@ -1,0 +1,115 @@
+body {
+    background-color: #ECE9E6;
+    margin: 0;
+    font-family: 'Inter';
+}
+
+h2 {
+    margin: 0;
+    color: #303030;
+}
+
+hr {
+    border: 0;
+    height: 0.5px;
+    background-color: #30303050;
+    margin: 10px 0px 0px;
+}
+
+.addCardForm {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.newTaskTitle {
+    color: #303030;
+}
+
+.addCardText {
+    margin-top: 5px;
+    display: block;
+    min-width: 350px;
+    min-height: 60px;
+    max-width: 350px;
+    max-height: 60px;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.addCardButton {
+    text-align: center;
+    width: 300px;
+    margin: 0;
+    border: 0;
+    border-radius: 8px;
+    height: 40px;
+    background-color: #369af2;
+    color: #fff;
+    font-family: 'Inter';
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.addCardButton:hover {
+    background-color: #369af299;
+}
+
+.wrapper {
+    min-height: 600px;
+    background-color: #fff;
+    border-radius: 18px;
+    margin: 20px 100px 20px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-column {
+    width: 380px;
+    background-color: #ECE9E6;
+    border-radius: 12px;
+    padding: 15px 20px;
+}
+
+.task-column:nth-child(2) {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.card {
+    margin-top: 15px;
+    max-width: 380px;
+    padding: 16px 20px;
+    border-radius: 8px;
+}
+
+.cardText {
+    font-weight: 500;
+    color: #303030;
+    font-size: 16px;
+    margin: 0;
+}
+
+.todoCard {
+    background-color: #aaccf080;
+}
+
+.doingCard {
+    background-color: #F0AACC80;
+}
+
+.doneCard {
+    background-color: #f3f3f3;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do App</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <div class="addCardForm">
+        <label for="addCardText" class="newTaskTitle">Новая карточка</label>
+        <textarea name="addCardText" class="addCardText" id="addCardText" placeholder="Текст новой карточки"></textarea>
+        <p style="color:#c20000;display: none;font-size: 14px;" class="warning">Введите текст нового задания</p>
+        <button class="addCardButton" id="addCardButton">ДОБАВИТЬ</button>
+    </div>
+    <div class="wrapper">
+        <div class="task-column">
+            <h2>To Do</h2>
+            <hr>
+            <div class="cards" id="todo">
+            </div>
+        </div>
+        <div class="task-column">
+            <h2>Doing</h2>
+            <hr>
+            <div class="cards" id="doing">
+            </div>
+        </div>
+        <div class="task-column">
+            <h2>Done</h2>
+            <hr>
+            <div class="cards" id="done">
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
