@@ -11,12 +11,23 @@
 </head>
 
 <body>
-    <div class="addCardForm">
-        <label for="addCardText" class="newTaskTitle">Новая карточка</label>
-        <textarea name="addCardText" class="addCardText" id="addCardText" placeholder="Текст новой карточки"></textarea>
-        <p style="color:#c20000;display: none;font-size: 14px;" class="warning">Введите текст нового задания</p>
-        <button class="addCardButton" id="addCardButton">ДОБАВИТЬ</button>
+    <div class="controls">
+        <div class="theme-picker">
+            <div>
+                <label for="themecolor">Выберите цвет для столбцов</label><br><br>
+                <input type="color" id="themecolor" name="themecolor" value="#ECE9E6"><br><br>
+                <input type="submit" id="colorButton">
+            </div>
+        </div>
+        <div class="addCardForm">
+            <label for="addCardText" class="newTaskTitle">Новая карточка</label>
+            <textarea name="addCardText" class="addCardText" id="addCardText"
+                placeholder="Текст новой карточки"></textarea>
+            <p style="color:#c20000;display: none;font-size: 14px;" class="warning">Введите текст нового задания</p>
+            <button class="addCardButton" id="addCardButton">ДОБАВИТЬ</button>
+        </div>
     </div>
+
     <div class="wrapper">
         <div class="task-column">
             <h2>To Do</h2>

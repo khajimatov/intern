@@ -1,4 +1,6 @@
 window.onload = function () {
+    let themeColor = localStorage.getItem('themeColor');
+    document.querySelectorAll('.task-column').forEach(el => el.style.backgroundColor = themeColor);
     const TODO = "todo";
     const DOING = "doing";
     const DONE = "done";
@@ -165,4 +167,9 @@ window.onload = function () {
             renderCards();
         }
     })
+    document.querySelector('#colorButton').onclick = () => {
+        let themeColor = document.getElementById('themecolor').value;
+        document.querySelectorAll('.task-column').forEach(el => el.style.backgroundColor = themeColor);
+        localStorage.setItem('themeColor', themeColor);
+    };
 }
