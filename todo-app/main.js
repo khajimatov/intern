@@ -151,6 +151,7 @@ window.onload = function () {
         })
     })
 
+
     document.getElementById('addCardButton').addEventListener('click', () => {
         const addCardText = document.getElementById('addCardText').value;
         if (addCardText === "") {
@@ -167,6 +168,9 @@ window.onload = function () {
             renderCards();
         }
     })
+
+
+
     document.querySelector('#colorButton').onclick = () => {
         let themeColor = document.getElementById('themecolor').value;
         document.querySelectorAll('.task-column').forEach(el => el.style.backgroundColor = themeColor);
