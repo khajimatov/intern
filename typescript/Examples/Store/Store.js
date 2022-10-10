@@ -47,7 +47,10 @@ var Store = /** @class */ (function () {
         var table = [];
         this.products.forEach(function (product) {
             var days = Math.floor((Date.now() - product.deliveryTimestamp.getTime()) / (1000 * 3600 * 24));
-            table.push({ "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4), "Time past": "".concat(days, " days"), "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh() });
+            table.push({
+                "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4),
+                "Time past": "".concat(days, " days"), "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh()
+            });
         });
         console.table(table);
     };

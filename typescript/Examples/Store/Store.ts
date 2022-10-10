@@ -18,9 +18,6 @@ interface IProduct {
     name: string;
     isFresh(): boolean;
 };
-interface iMilk extends Omit<IProduct, "storagePlace"> {
-    mass: number;
-}
 
 abstract class Product implements IProduct {
     public deliveryTimestamp: Date = new Date();
@@ -46,7 +43,10 @@ class Store implements IStore {
         let table: Object[] = [];
         this.products.forEach(product => {
             let days = Math.floor((Date.now() - product.deliveryTimestamp.getTime()) / (1000 * 3600 * 24));
-            table.push({ "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4), "Time past": `${days} days`, "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh() });
+            table.push({
+                "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4),
+                "Time past": `${days} days`, "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh()
+            });
         });
         console.table(table);
     }
