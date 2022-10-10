@@ -45,10 +45,8 @@ class Store implements IStore {
     public doInspection(): void {
         let table: Object[] = [];
         this.products.forEach(product => {
-            table.push({ "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4), "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh() });
-            // let days = (Date.now() - product.deliveryTimestamp.getTime()) / (1000 * 3600 * 24);
-            // console.table(`${product.name} is fresh: ${product.isFresh()}, Storage: ${product.storagePlace}, Life Days: ${product.storageLifeDays}, Delivery: ${product.deliveryTimestamp.toISOString().split('T')[0]} | ${Math.floor(days)} days ago`);
-            // console.table({ "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4), "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh() });
+            let days = Math.floor((Date.now() - product.deliveryTimestamp.getTime()) / (1000 * 3600 * 24));
+            table.push({ "Product": product.name, "Delivered at": product.deliveryTimestamp.toDateString().slice(4), "Time past": `${days} days`, "Storage Place": product.storagePlace, "S. Life Days": product.storageLifeDays, "Fresh": product.isFresh() });
         });
         console.table(table);
     }
