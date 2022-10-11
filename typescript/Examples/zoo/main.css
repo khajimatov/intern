@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+}
+
+header {
+    margin-top: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Lakki Reddy';
+    color: #FF7676;
+    margin: 0;
+    font-size: 60px;
+}
+
+header button {
+    font-family: 'Comic Sans MS';
+    font-weight: 500;
+    font-size: 20px;
+    background-color: #FF7676;
+    color: #fff;
+    outline: 0;
+    border: 0;
+    border-radius: 6px;
+    padding: 6px 16px;
+    box-shadow: 0 3px #A84E4E;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #ff7676c4;
+}
+
+.animals {
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.animal {
+    cursor: pointer;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 24px;
+}
+
+#dog {
+    background-color: #DFFFBF;
+    border: 3px solid #BBFF76;
+}
+
+#chicken {
+    background-color: #DFBFFF;
+    border: 3px solid #BB76FF;
+}
+
+#turtle {
+    background-color: #BFFFFF;
+    border: 3px solid #76FFFF;
+}
+
+.park {
+    margin-top: 30px;
+    width: 65%;
+    min-height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px dashed #FF7676;
+    stroke-dasharray: 20;
+    border-radius: 16px;
+}
