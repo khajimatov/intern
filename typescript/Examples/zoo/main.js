@@ -64,7 +64,7 @@ function createHTMLElements(elm, container) {
     }
     ;
     h4.textContent = elm.name;
-    h5.textContent = 'Age: ' + elm.age.toString() + ' Food: ' + elm.food.toString() + ' Happiness: ' + elm.happiness.toString() + ' Health: ' + elm.health.toString();
+    h5.innerHTML = 'Age: ' + elm.age.toString() + ' Food: ' + elm.food.toString() + '<br>' + ' Happiness: ' + elm.happiness.toString() + ' Health: ' + elm.health.toString();
     feedButton.textContent = 'FEED';
     feedButton.addEventListener('click', function (event) { return onClickFeedButton(event); });
     treatButton.textContent = 'TREAT';
