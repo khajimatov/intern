@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoo</title>
     <link rel="stylesheet" href="main.css">
+    <script src="logic.js"></script>
     <script src="main.js"></script>
 </head>
 
@@ -14,13 +15,14 @@
     <header>
         <h1>ZOO</h1>
         <section class="animals">
-            <div class="animal" id="dog">🐕</div>
-            <div class="animal" id="chicken">🐓</div>
-            <div class="animal" id="turtle">🐢</div>
+            <div class="animal dog" id="dog">🐕</div>
+            <div class="animal chicken" id="chicken">🐓</div>
+            <div class="animal turtle" id="turtle">🐢</div>
         </section>
-        <button id="addAnimalButton">Add animal</button>
+        <button id="addAnimalButton">Click on animal to add</button>
     </header>
-    <div class="park"></div>
+    <div class="container" id="container">
+    </div>
 </body>
 
 </html>

@@ -42,34 +42,69 @@ header button:hover {
 }
 
 .animal {
-    cursor: pointer;
     padding: 14px 28px;
     border-radius: 6px;
     font-size: 24px;
 }
 
-#dog {
+.animal:hover {
+    cursor: pointer;
+    opacity: 70%;
+}
+
+.dog {
     background-color: #DFFFBF;
     border: 3px solid #BBFF76;
 }
 
-#chicken {
+.chicken {
     background-color: #DFBFFF;
     border: 3px solid #BB76FF;
 }
 
-#turtle {
+.turtle {
     background-color: #BFFFFF;
     border: 3px solid #76FFFF;
 }
 
-.park {
-    margin-top: 30px;
-    width: 65%;
+.container {
+    display: grid;
+    /* justify-content: left; */
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    min-width: 910px;
+    width: fit-content;
     min-height: 300px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 30px auto 50px auto;
     border: 2px dashed #FF7676;
     stroke-dasharray: 20;
     border-radius: 16px;
+    padding: 16px;
+}
+
+.animalCard {
+    border-radius: 6px;
+    width: 140px;
+    height: 140px;
+    padding: 10px;
+    text-align: center;
+    display: grid;
+}
+
+.animalCard h3,
+h4,
+h5 {
+    margin: 0;
+}
+
+.animalCard:hover {
+    box-shadow: 0 4px 15px #9b9b9b25;
+}
+
+.animalCard button {
+    cursor: pointer;
+}
+
+.treatPlayButtons {
+    margin-top: 6px;
 }
