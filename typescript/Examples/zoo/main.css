@@ -69,7 +69,6 @@ header button:hover {
 
 .container {
     display: grid;
-    /* justify-content: left; */
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
     min-width: 910px;
@@ -83,9 +82,10 @@ header button:hover {
 }
 
 .animalCard {
+    font-family: 'Inter';
     border-radius: 6px;
-    width: 140px;
-    height: 140px;
+    width: 170px;
+    height: 150px;
     padding: 10px;
     text-align: center;
     display: grid;
@@ -102,9 +102,24 @@ h5 {
 }
 
 .animalCard button {
+    background-color: transparent;
+    color: #000;
+    outline: 0;
+    border: 2px solid #000;
+    border-radius: 4px;
     cursor: pointer;
+    font-family: 'Comic Sans MS';
+}
+
+.animalCard button:hover {
+    background-color: #000;
+    color: #fff;
 }
 
 .treatPlayButtons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
     margin-top: 6px;
+
 }
