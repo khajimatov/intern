@@ -14,35 +14,35 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 ;
+;
 var SomeAnimal = /** @class */ (function () {
-    function SomeAnimal(name, age) {
-        this.name = name;
-        this.age = age;
-        this.name = name;
-        this.age = age;
-        this.food = 0;
-        this.happiness = 0;
-        this.health = 0;
+    function SomeAnimal(elm) {
+        this.elm = elm;
+        this.name = elm.name;
+        this.age = elm.age;
+        this.food = elm.food;
+        this.happiness = elm.happiness;
+        this.health = elm.health;
     }
     ;
     SomeAnimal.prototype.feed = function () {
-        this.food += 1;
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+        this.elm.food += 1;
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
     ;
     SomeAnimal.prototype.play = function () {
-        this.food -= 1;
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+        this.elm.food -= 1;
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
     ;
     SomeAnimal.prototype.treat = function () {
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
     ;
     return SomeAnimal;
@@ -61,17 +61,14 @@ var Fabric = /** @class */ (function () {
 ;
 var DogFabric = /** @class */ (function (_super) {
     __extends(DogFabric, _super);
-    function DogFabric(name, age) {
+    function DogFabric(elm) {
         var _this = _super.call(this) || this;
-        _this.name = name;
-        _this.age = age;
-        _this.name = name;
-        _this.age = age;
+        _this.elm = elm;
         return _this;
     }
     ;
     DogFabric.prototype.factoryMethod = function () {
-        return new Dog(this.name, this.age);
+        return new Dog(this.elm);
     };
     ;
     return DogFabric;
@@ -79,17 +76,14 @@ var DogFabric = /** @class */ (function (_super) {
 ;
 var ChickenFabric = /** @class */ (function (_super) {
     __extends(ChickenFabric, _super);
-    function ChickenFabric(name, age) {
+    function ChickenFabric(elm) {
         var _this = _super.call(this) || this;
-        _this.name = name;
-        _this.age = age;
-        _this.name = name;
-        _this.age = age;
+        _this.elm = elm;
         return _this;
     }
     ;
     ChickenFabric.prototype.factoryMethod = function () {
-        return new Chicken(this.name, this.age);
+        return new Chicken(this.elm);
     };
     ;
     return ChickenFabric;
@@ -97,17 +91,14 @@ var ChickenFabric = /** @class */ (function (_super) {
 ;
 var TurtleFabric = /** @class */ (function (_super) {
     __extends(TurtleFabric, _super);
-    function TurtleFabric(name, age) {
+    function TurtleFabric(elm) {
         var _this = _super.call(this) || this;
-        _this.name = name;
-        _this.age = age;
-        _this.name = name;
-        _this.age = age;
+        _this.elm = elm;
         return _this;
     }
     ;
     TurtleFabric.prototype.factoryMethod = function () {
-        return new Turtle(this.name, this.age);
+        return new Turtle(this.elm);
     };
     ;
     return TurtleFabric;
@@ -149,11 +140,3 @@ var Turtle = /** @class */ (function (_super) {
     return Turtle;
 }(SomeAnimal));
 ;
-console.log('HMMMM');
-var dog = new DogFabric("Doggo", 12).factoryMethod();
-var chicken = new ChickenFabric("Chikko", 5).factoryMethod();
-var turtle = new TurtleFabric("Tutu", 20).factoryMethod();
-dog.feed();
-console.log(dog);
-console.log(chicken);
-console.log(turtle);

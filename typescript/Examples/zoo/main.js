@@ -7,6 +7,14 @@ window.onload = function () {
         elm.addEventListener('click', function () { onClickAnimal(elm); });
     });
     renderAnimals();
+    // ----------------- EXPERIMENT WITH MODAL WINDOWS ----------------------
+    var modal = document.getElementById("myModal");
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+    // END OF EXPERIMENT
 };
 function addAnimalToStorage(elmId) {
     var animalName = prompt("Write name of the ".concat(elmId), 'Pitbull');
@@ -26,11 +34,19 @@ function onClickAnimal(elm) {
     var button = document.getElementById('addAnimalButton');
     if (button) {
         button.textContent = "Add ".concat(elm.id);
-        button.onclick = function () { addAnimalToStorage(elm.id); };
+        button.onclick = function () {
+            openModal(elm.id, elm.textContent);
+        };
     }
     ;
 }
 ;
+function openModal(elmId, elmText) {
+    // addAnimalToStorage(elm.id)
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    modal.querySelector('h3').textContent = 'You are adding a ' + elmId + ' ' + elmText;
+}
 function renderAnimals() {
     var animalList = JSON.parse(localStorage.animals);
     var container = document.getElementById('container');
@@ -66,11 +82,11 @@ function createHTMLElements(elm, container) {
     h4.textContent = elm.name;
     h5.innerHTML = 'Age: ' + elm.age.toString() + ' Food: ' + elm.food.toString() + '<br>' + ' Happiness: ' + elm.happiness.toString() + ' Health: ' + elm.health.toString();
     feedButton.textContent = 'FEED';
-    feedButton.addEventListener('click', function (event) { return onClickFeedButton(event); });
+    feedButton.addEventListener('click', function () { return onClickFeedButton(elm); });
     treatButton.textContent = 'TREAT';
-    treatButton.addEventListener('click', function (event) { return onClickTreatButton(event); });
+    treatButton.addEventListener('click', function () { return onClickTreatButton(elm); });
     playButton.textContent = 'PLAY';
-    playButton.addEventListener('click', function (event) { return onClickPlayButton(event); });
+    playButton.addEventListener('click', function () { return onClickPlayButton(elm); });
     innerDiv.setAttribute('class', 'treatPlayButtons');
     if (elm.id) {
         innerDiv.setAttribute('id', elm.id.toString());
@@ -84,18 +100,72 @@ function createHTMLElements(elm, container) {
     ;
 }
 ;
-function onClickFeedButton(event) {
-    var parent = event.target.parentElement;
-    console.log(parent === null || parent === void 0 ? void 0 : parent.id);
+function onClickFeedButton(elm) {
+    var newAnimal;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().feed();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().feed();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().feed();
+            break;
+        default:
+            break;
+    }
+    ;
+    newAnimal.id = elm.id;
+    var animalList = JSON.parse(localStorage.animals);
+    var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 }
 ;
-function onClickTreatButton(event) {
-    var parent = event.target.parentElement;
-    console.log(parent === null || parent === void 0 ? void 0 : parent.id);
+function onClickTreatButton(elm) {
+    var newAnimal;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().treat();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().treat();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().treat();
+            break;
+        default:
+            break;
+    }
+    ;
+    newAnimal.id = elm.id;
+    var animalList = JSON.parse(localStorage.animals);
+    var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 }
 ;
-function onClickPlayButton(event) {
-    var parent = event.target.parentElement;
-    console.log(parent === null || parent === void 0 ? void 0 : parent.id);
+function onClickPlayButton(elm) {
+    var newAnimal;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().play();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().play();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().play();
+            break;
+        default:
+            break;
+    }
+    ;
+    newAnimal.id = elm.id;
+    var animalList = JSON.parse(localStorage.animals);
+    var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 }
 ;

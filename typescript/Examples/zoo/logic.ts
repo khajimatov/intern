@@ -6,76 +6,74 @@ interface Animal {
     food: number;
     happiness: number;
     health: number;
-    feed(): Animal;
-    play(): Animal;
-    treat(): Animal;
+    feed(): AnimalSelf;
+    play(): AnimalSelf;
+    treat(): AnimalSelf;
+};
+interface AnimalSelf extends Omit<Animal, "feed" | "play" | "treat"> {
 };
 
 abstract class SomeAnimal implements Animal {
     public food: number;
+    public name: string;
+    public age: number;
     public happiness: number;
     public health: number;
     public abstract type: string;
-    public constructor(public name: string, public age: number) {
-        this.name = name;
-        this.age = age;
-        this.food = 0;
-        this.happiness = 0;
-        this.health = 0;
+    public constructor(private elm: AnimalSelf) {
+        this.name = elm.name;
+        this.age = elm.age;
+        this.food = elm.food;
+        this.happiness = elm.happiness;
+        this.health = elm.health;
     };
-    public feed(): Animal {
-        this.food += 1;
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+    public feed(): AnimalSelf {
+        this.elm.food += 1;
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
-    public play(): Animal {
-        this.food -= 1;
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+    public play(): AnimalSelf {
+        this.elm.food -= 1;
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
-    public treat(): Animal {
-        this.happiness += 1;
-        this.health += 1;
-        return this;
+    public treat(): AnimalSelf {
+        this.elm.happiness += 1;
+        this.elm.health += 1;
+        return this.elm;
     };
 };
 abstract class Fabric {
-    public abstract factoryMethod(): Animal;
-    public someOperation(): Animal {
+    public abstract factoryMethod(): AnimalSelf;
+    public someOperation(): AnimalSelf {
         const animal = this.factoryMethod();
         return animal;
     };
 };
 class DogFabric extends Fabric {
-    public constructor(private name: string, private age: number) {
+    public constructor(private elm: AnimalSelf) {
         super();
-        this.name = name;
-        this.age = age;
     };
     public factoryMethod(): Animal {
-        return new Dog(this.name, this.age);
+        return new Dog(this.elm);
     };
 };
 class ChickenFabric extends Fabric {
-    public constructor(private name: string, private age: number) {
+    public constructor(private elm: AnimalSelf) {
         super();
-        this.name = name;
-        this.age = age;
     };
     public factoryMethod(): Animal {
-        return new Chicken(this.name, this.age);
+        return new Chicken(this.elm);
     };
 };
 class TurtleFabric extends Fabric {
-    public constructor(private name: string, private age: number) {
+    public constructor(private elm: AnimalSelf) {
         super();
-        this.name = name;
-        this.age = age;
     };
     public factoryMethod(): Animal {
-        return new Turtle(this.name, this.age);
+        return new Turtle(this.elm);
     };
 };
 
@@ -94,12 +92,3 @@ class Turtle extends SomeAnimal {
     // public name: string = "Turtle";
     // public age: number = Math.floor(Math.random() * 20) + 1;
 };
-
-console.log('HMMMM');
-let dog = new DogFabric("Doggo", 12).factoryMethod();
-let chicken = new ChickenFabric("Chikko", 5).factoryMethod();
-let turtle = new TurtleFabric("Tutu", 20).factoryMethod();
-dog.feed();
-console.log(dog);
-console.log(chicken);
-console.log(turtle);

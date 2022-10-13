@@ -8,6 +8,17 @@ window.onload = () => {
         elm.addEventListener('click', () => { onClickAnimal(elm) });
     });
     renderAnimals();
+
+    // ----------------- EXPERIMENT WITH MODAL WINDOWS ----------------------
+    let modal = document.getElementById("myModal")!;
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // END OF EXPERIMENT
+
 };
 
 function addAnimalToStorage(elmId: string) {
@@ -28,13 +39,23 @@ function onClickAnimal(elm: HTMLElement) {
     let button = document.getElementById('addAnimalButton');
     if (button) {
         button.textContent = `Add ${elm.id}`;
-        button.onclick = () => { addAnimalToStorage(elm.id) };
+        button.onclick = () => {
+            openModal(elm.id, elm.textContent!);
+        };
     };
 
 };
 
+function openModal(elmId: string, elmText: string) {
+    // addAnimalToStorage(elm.id)
+    let modal = document.getElementById("myModal")!;
+    modal.style.display = "block";
+    modal.querySelector('h3')!.textContent = 'You are adding a ' + elmId + ' ' + elmText;
+    
+}
+
 function renderAnimals() {
-    let animalList: Animal[] = JSON.parse(localStorage.animals);
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let container = document.getElementById('container');
     if (container) {
         container.textContent = '';
@@ -44,7 +65,7 @@ function renderAnimals() {
     });
 };
 
-function createHTMLElements(elm: Animal, container: HTMLElement | null) {
+function createHTMLElements(elm: AnimalSelf, container: HTMLElement | null) {
     let div = document.createElement('div');
     let h3 = document.createElement('h3');
     let h4 = document.createElement('h4');
@@ -64,11 +85,11 @@ function createHTMLElements(elm: Animal, container: HTMLElement | null) {
     h4.textContent = elm.name;
     h5.innerHTML = 'Age: ' + elm.age.toString() + ' Food: ' + elm.food.toString() + '<br>' + ' Happiness: ' + elm.happiness.toString() + ' Health: ' + elm.health.toString();
     feedButton.textContent = 'FEED';
-    feedButton.addEventListener('click', (event) => onClickFeedButton(event));
+    feedButton.addEventListener('click', () => onClickFeedButton(elm));
     treatButton.textContent = 'TREAT';
-    treatButton.addEventListener('click', (event) => onClickTreatButton(event));
+    treatButton.addEventListener('click', () => onClickTreatButton(elm));
     playButton.textContent = 'PLAY';
-    playButton.addEventListener('click', (event) => onClickPlayButton(event));
+    playButton.addEventListener('click', () => onClickPlayButton(elm));
     innerDiv.setAttribute('class', 'treatPlayButtons');
     if (elm.id) {
         innerDiv.setAttribute('id', elm.id.toString());
@@ -80,15 +101,66 @@ function createHTMLElements(elm: Animal, container: HTMLElement | null) {
     };
 };
 
-function onClickFeedButton(event: Event) {
-    let parent = (<HTMLElement>event.target).parentElement;
-    console.log(parent?.id);
+function onClickFeedButton(elm: AnimalSelf) {
+    let newAnimal: AnimalSelf;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().feed();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().feed();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().feed();
+            break;
+        default:
+            break;
+    };
+    newAnimal!.id = elm.id;
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
+    let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 };
-function onClickTreatButton(event: Event) {
-    let parent = (<HTMLElement>event.target).parentElement;
-    console.log(parent?.id);
+function onClickTreatButton(elm: AnimalSelf) {
+    let newAnimal: AnimalSelf;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().treat();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().treat();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().treat();
+            break;
+        default:
+            break;
+    };
+    newAnimal!.id = elm.id;
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
+    let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 };
-function onClickPlayButton(event: Event) {
-    let parent = (<HTMLElement>event.target).parentElement;
-    console.log(parent?.id);
+function onClickPlayButton(elm: AnimalSelf) {
+    let newAnimal: AnimalSelf;
+    switch (elm.type) {
+        case 'dog':
+            newAnimal = new DogFabric(elm).factoryMethod().play();
+            break;
+        case 'chicken':
+            newAnimal = new ChickenFabric(elm).factoryMethod().play();
+            break;
+        case 'turtle':
+            newAnimal = new TurtleFabric(elm).factoryMethod().play();
+            break;
+        default:
+            break;
+    };
+    newAnimal!.id = elm.id;
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
+    let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
+    localStorage.setItem('animals', JSON.stringify(a));
+    renderAnimals();
 };
