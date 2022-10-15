@@ -13,18 +13,15 @@ window.onload = () => {
     let modal = document.getElementById("myModal")!;
     window.onclick = function (event) {
         if (event.target == modal) {
-            modal.style.display = "none";
+            onClickCancelModal(modal);
         }
     }
-
     // END OF EXPERIMENT
 
 };
 
-function addAnimalToStorage(elmId: string) {
-    const animalName: string | null = prompt(`Write name of the ${elmId}`, 'Pitbull');
-    let animalAgeString: string | null = prompt(`Write name of the ${elmId}`, '10');
-    const animalAge: number = animalAgeString != null ? parseInt(animalAgeString) : 0;
+function addAnimalToStorage(elmId: string, animalName: string, animalAge: string) {
+    parseInt(animalAge);
     const animalType: string = elmId;
     const animal: Object = { "id": Date.now(), "name": animalName, "age": animalAge, "type": animalType, "food": 0, "happiness": 0, "health": 0 };
     JSON.stringify(animal);
@@ -39,27 +36,80 @@ function onClickAnimal(elm: HTMLElement) {
     let button = document.getElementById('addAnimalButton');
     if (button) {
         button.textContent = `Add ${elm.id}`;
-        button.onclick = () => {
-            openModal(elm.id, elm.textContent!);
-        };
+        button.addEventListener('click', () => openModal(elm.id, elm.textContent!));
     };
 
 };
 
 function openModal(elmId: string, elmText: string) {
-    // addAnimalToStorage(elm.id)
     let modal = document.getElementById("myModal")!;
     modal.style.display = "block";
     modal.querySelector('h3')!.textContent = 'You are adding a ' + elmId + ' ' + elmText;
-    
-}
+    modal.querySelector('.cancelButton')!.addEventListener('click', () => onClickCancelModal(modal));
+    inputValidation();
+    modal.querySelector<HTMLElement>('#addAnimalSubmitButton')!.addEventListener('click', () => addAnimalSubmitButton(elmId));
+};
+
+function onClickCancelModal(modal: HTMLElement) {
+    modal.style.display = "none";
+    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => { elm.style.opacity = ''; });
+    document.getElementById('addAnimalButton')!.textContent = 'Click on animal to add';
+    // document.getElementById('addAnimalButton')?.removeEventListener()
+
+};
+
+function inputValidation() {
+    document.getElementById('animalName')!.addEventListener('change', (e) => {
+        let animalNameInput: string = (<HTMLInputElement>e.target).value;
+        if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
+            document.getElementById('animalNameWarning')!.style.display = "none";
+            console.log(animalNameInput);
+        }
+        else {
+            document.getElementById('animalNameWarning')!.style.display = "block";
+        };
+    });
+    document.getElementById('animalAge')!.addEventListener('change', (e) => {
+        let animalAgeInput: string = (<HTMLInputElement>e.target).value;
+        if (/^[0-9]+$/.test(animalAgeInput) === true) {
+            document.getElementById('animalAgeWarning')!.style.display = "none";
+            console.log(animalAgeInput);
+        }
+        else {
+            document.getElementById('animalAgeWarning')!.style.display = "block";
+        };
+    });
+};
+
+function addAnimalSubmitButton(elmId: string) {
+    let animalNameInput: string = document.querySelector<HTMLInputElement>('#animalName')!.value;
+    let animalAgeInput: string = document.querySelector<HTMLInputElement>('#animalAge')!.value;
+
+    if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
+        document.getElementById('animalNameWarning')!.style.display = "none";
+    }
+    else {
+        document.getElementById('animalNameWarning')!.style.display = "block";
+    };
+    if (/^[0-9]+$/.test(animalAgeInput) === true) {
+        document.getElementById('animalAgeWarning')!.style.display = "none";
+    }
+    else {
+        document.getElementById('animalAgeWarning')!.style.display = "block";
+    };
+
+    if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
+        addAnimalToStorage(elmId, document.querySelector<HTMLInputElement>('#animalName')!.value, document.querySelector<HTMLInputElement>('#animalAge')!.value);
+        document.querySelector<HTMLInputElement>('#animalName')!.value = '';
+        document.querySelector<HTMLInputElement>('#animalAge')!.value = '';
+        onClickCancelModal(document.getElementById('myModal')!);
+    };
+};
 
 function renderAnimals() {
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let container = document.getElementById('container');
-    if (container) {
-        container.textContent = '';
-    };
+    container!.innerHTML = '';
     animalList.map(elm => {
         createHTMLElements(elm, container);
     });

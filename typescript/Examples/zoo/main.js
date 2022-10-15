@@ -11,15 +11,13 @@ window.onload = function () {
     var modal = document.getElementById("myModal");
     window.onclick = function (event) {
         if (event.target == modal) {
-            modal.style.display = "none";
+            onClickCancelModal(modal);
         }
     };
     // END OF EXPERIMENT
 };
-function addAnimalToStorage(elmId) {
-    var animalName = prompt("Write name of the ".concat(elmId), 'Pitbull');
-    var animalAgeString = prompt("Write name of the ".concat(elmId), '10');
-    var animalAge = animalAgeString != null ? parseInt(animalAgeString) : 0;
+function addAnimalToStorage(elmId, animalName, animalAge) {
+    parseInt(animalAge);
     var animalType = elmId;
     var animal = { "id": Date.now(), "name": animalName, "age": animalAge, "type": animalType, "food": 0, "happiness": 0, "health": 0 };
     JSON.stringify(animal);
@@ -34,26 +32,82 @@ function onClickAnimal(elm) {
     var button = document.getElementById('addAnimalButton');
     if (button) {
         button.textContent = "Add ".concat(elm.id);
-        button.onclick = function () {
-            openModal(elm.id, elm.textContent);
-        };
+        button.addEventListener('click', function () { return openModal(elm.id, elm.textContent); });
     }
     ;
 }
 ;
 function openModal(elmId, elmText) {
-    // addAnimalToStorage(elm.id)
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
     modal.querySelector('h3').textContent = 'You are adding a ' + elmId + ' ' + elmText;
+    modal.querySelector('.cancelButton').addEventListener('click', function () { return onClickCancelModal(modal); });
+    inputValidation();
+    modal.querySelector('#addAnimalSubmitButton').addEventListener('click', function () { return addAnimalSubmitButton(elmId); });
 }
+;
+function onClickCancelModal(modal) {
+    modal.style.display = "none";
+    document.querySelectorAll('.animal').forEach(function (elm) { elm.style.opacity = ''; });
+    document.getElementById('addAnimalButton').textContent = 'Click on animal to add';
+    // document.getElementById('addAnimalButton')?.removeEventListener()
+}
+;
+function inputValidation() {
+    document.getElementById('animalName').addEventListener('change', function (e) {
+        var animalNameInput = e.target.value;
+        if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
+            document.getElementById('animalNameWarning').style.display = "none";
+            console.log(animalNameInput);
+        }
+        else {
+            document.getElementById('animalNameWarning').style.display = "block";
+        }
+        ;
+    });
+    document.getElementById('animalAge').addEventListener('change', function (e) {
+        var animalAgeInput = e.target.value;
+        if (/^[0-9]+$/.test(animalAgeInput) === true) {
+            document.getElementById('animalAgeWarning').style.display = "none";
+            console.log(animalAgeInput);
+        }
+        else {
+            document.getElementById('animalAgeWarning').style.display = "block";
+        }
+        ;
+    });
+}
+;
+function addAnimalSubmitButton(elmId) {
+    var animalNameInput = document.querySelector('#animalName').value;
+    var animalAgeInput = document.querySelector('#animalAge').value;
+    if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
+        document.getElementById('animalNameWarning').style.display = "none";
+    }
+    else {
+        document.getElementById('animalNameWarning').style.display = "block";
+    }
+    ;
+    if (/^[0-9]+$/.test(animalAgeInput) === true) {
+        document.getElementById('animalAgeWarning').style.display = "none";
+    }
+    else {
+        document.getElementById('animalAgeWarning').style.display = "block";
+    }
+    ;
+    if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
+        addAnimalToStorage(elmId, document.querySelector('#animalName').value, document.querySelector('#animalAge').value);
+        document.querySelector('#animalName').value = '';
+        document.querySelector('#animalAge').value = '';
+        onClickCancelModal(document.getElementById('myModal'));
+    }
+    ;
+}
+;
 function renderAnimals() {
     var animalList = JSON.parse(localStorage.animals);
     var container = document.getElementById('container');
-    if (container) {
-        container.textContent = '';
-    }
-    ;
+    container.innerHTML = '';
     animalList.map(function (elm) {
         createHTMLElements(elm, container);
     });

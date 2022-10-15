@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoo</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <script src="logic.js"></script>
     <script src="main.js"></script>
 </head>
@@ -18,10 +19,12 @@
             <form class="modalForm">
                 <label for="animalName">Animal name</label>
                 <input type="text" name="animalName" id="animalName">
+                <p id="animalNameWarning">Name should contain letters only</p>
                 <label for="animalAge">Animal age</label>
                 <input type="text" name="animalAge" id="animalAge">
-                <input type="submit" value="Add" class="submitButton">
-                <button class="cancelButton">Cancel</button>
+                <p id="animalAgeWarning">Age should contain numbers only</p>
+                <input type="button" value="Add" class="submitButton" id="addAnimalSubmitButton">
+                <button type="button" class="cancelButton">Cancel</button>
             </form>
         </div>
     </div>
