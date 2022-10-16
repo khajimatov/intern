@@ -95,14 +95,14 @@ const addAnimalSubmitButton = function (e: Event) {
 
 function renderAnimals() {
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
-    let container = document.getElementById('container');
-    container!.innerHTML = '';
+    let container = document.getElementById('container')!;
+    container.innerHTML = '';
     animalList.map(elm => {
         createHTMLElements(elm, container);
     });
 };
 
-function createHTMLElements(elm: AnimalSelf, container: HTMLElement | null) {
+function createHTMLElements(elm: AnimalSelf, container: HTMLElement) {
     let div = document.createElement('div');
     let h3 = document.createElement('h3');
     let h4 = document.createElement('h4');
@@ -142,13 +142,13 @@ function onClickFeedButton(elm: AnimalSelf) {
     let newAnimal: AnimalSelf;
     switch (elm.type) {
         case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().feed();
+            newAnimal = new Dog(elm).feed();
             break;
         case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().feed();
+            newAnimal = new Chicken(elm).feed();
             break;
         case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().feed();
+            newAnimal = new Turtle(elm).feed();
             break;
         default:
             break;
@@ -163,13 +163,13 @@ function onClickTreatButton(elm: AnimalSelf) {
     let newAnimal: AnimalSelf;
     switch (elm.type) {
         case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().treat();
+            newAnimal = new Dog(elm).treat();
             break;
         case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().treat();
+            newAnimal = new Chicken(elm).treat();
             break;
         case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().treat();
+            newAnimal = new Turtle(elm).treat();
             break;
         default:
             break;
@@ -184,13 +184,13 @@ function onClickPlayButton(elm: AnimalSelf) {
     let newAnimal: AnimalSelf;
     switch (elm.type) {
         case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().play();
+            newAnimal = new Dog(elm).play();
             break;
         case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().play();
+            newAnimal = new Chicken(elm).play();
             break;
         case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().play();
+            newAnimal = new Turtle(elm).play();
             break;
         default:
             break;
