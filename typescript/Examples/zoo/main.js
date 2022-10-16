@@ -59,9 +59,6 @@ var onClickCancelModal = function () {
     document.querySelector('#animalAge').value = '';
 };
 var addAnimalSubmitButton = function (e) {
-    var animalType = e.target.classList[1];
-    console.log(e.target.classList[1]);
-    e.target.classList.remove(animalType);
     var animalNameInput = document.querySelector('#animalName').value;
     var animalAgeInput = document.querySelector('#animalAge').value;
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
@@ -79,6 +76,8 @@ var addAnimalSubmitButton = function (e) {
     }
     ;
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
+        var animalType = e.target.classList[1];
+        e.target.classList.remove(animalType);
         addAnimalToStorage(animalType, document.querySelector('#animalName').value, document.querySelector('#animalAge').value);
         document.querySelector('#animalName').value = '';
         document.querySelector('#animalAge').value = '';

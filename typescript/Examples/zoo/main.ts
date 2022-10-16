@@ -65,10 +65,6 @@ const onClickCancelModal = function () {
 };
 
 const addAnimalSubmitButton = function (e: Event) {
-    let animalType = (<HTMLElement>e.target).classList[1];
-    console.log((<HTMLElement>e.target).classList[1]);
-    (<HTMLElement>e.target).classList.remove(animalType);
-
     let animalNameInput: string = document.querySelector<HTMLInputElement>('#animalName')!.value;
     let animalAgeInput: string = document.querySelector<HTMLInputElement>('#animalAge')!.value;
 
@@ -86,6 +82,8 @@ const addAnimalSubmitButton = function (e: Event) {
     };
 
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
+        let animalType = (<HTMLElement>e.target).classList[1];
+        (<HTMLElement>e.target).classList.remove(animalType);
         addAnimalToStorage(animalType, document.querySelector<HTMLInputElement>('#animalName')!.value, document.querySelector<HTMLInputElement>('#animalAge')!.value);
         document.querySelector<HTMLInputElement>('#animalName')!.value = '';
         document.querySelector<HTMLInputElement>('#animalAge')!.value = '';
