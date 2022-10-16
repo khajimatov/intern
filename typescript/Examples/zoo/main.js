@@ -1,4 +1,5 @@
 /// <reference path="logic.ts" />
+/// <reference path="strategy.ts" />
 var ANIMALS = "animals";
 !localStorage.getItem(ANIMALS) && localStorage.setItem(ANIMALS, JSON.stringify([]));
 var animalList = JSON.parse(localStorage.animals);
@@ -12,6 +13,7 @@ window.onload = function () {
         if (event.target == modal) {
             onClickCancelModal();
         }
+        ;
     };
 };
 function addAnimalToStorage(elmId, animalName, animalAge) {
@@ -137,7 +139,17 @@ function createHTMLElements(elm, container) {
 }
 ;
 function onClickFeedButton(elm) {
-    var newAnimal = new AnyAnimal(elm).feed();
+    var newAnimal;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).feed(elm);
+    }
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).feed(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).feed(elm);
+    }
+    ;
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
@@ -146,7 +158,17 @@ function onClickFeedButton(elm) {
 }
 ;
 function onClickTreatButton(elm) {
-    var newAnimal = new AnyAnimal(elm).treat();
+    var newAnimal;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).treat(elm);
+    }
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).treat(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).treat(elm);
+    }
+    ;
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
@@ -155,14 +177,26 @@ function onClickTreatButton(elm) {
 }
 ;
 function onClickPlayButton(elm) {
-    if (elm.food === 0) {
-        killAnimal(elm);
-        return;
+    var newAnimal;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).play(elm);
     }
-    var newAnimal = new AnyAnimal(elm).play();
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).play(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).play(elm);
+    }
+    ;
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
+    if (newAnimal.food <= 0) {
+        killAnimal(newAnimal);
+        return;
+    }
+    ;
+    console.log(newAnimal);
     localStorage.setItem('animals', JSON.stringify(a));
     renderAnimals();
 }
@@ -175,12 +209,17 @@ function killAnimal(animal) {
         if (animalList[index].id === animal.id) {
             animalIndex = index;
         }
+        ;
     }
+    ;
     if (animalIndex > -1) {
         animalList.splice(animalIndex, 1);
         localStorage.setItem(ANIMALS, JSON.stringify(animalList));
     }
+    ;
     if (animal) {
         document.getElementById(animalId).remove();
     }
+    ;
 }
+;

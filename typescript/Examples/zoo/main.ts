@@ -1,4 +1,5 @@
 /// <reference path="logic.ts" />
+/// <reference path="strategy.ts" />
 const ANIMALS: string = "animals";
 !localStorage.getItem(ANIMALS) && localStorage.setItem(ANIMALS, JSON.stringify([]));
 let animalList: Object[] = JSON.parse(localStorage.animals);
@@ -14,8 +15,8 @@ window.onload = () => {
     window.onclick = function (event) {
         if (event.target == modal) {
             onClickCancelModal();
-        }
-    }
+        };
+    };
 
 };
 
@@ -138,7 +139,16 @@ function createHTMLElements(elm: AnimalSelf, container: HTMLElement) {
 };
 
 function onClickFeedButton(elm: AnimalSelf) {
-    let newAnimal: AnimalSelf = new AnyAnimal(elm).feed();
+    let newAnimal: AnimalSelf;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).feed(elm);
+    }
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).feed(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).feed(elm);
+    };
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
@@ -146,7 +156,16 @@ function onClickFeedButton(elm: AnimalSelf) {
     renderAnimals();
 };
 function onClickTreatButton(elm: AnimalSelf) {
-    let newAnimal: AnimalSelf = new AnyAnimal(elm).treat();
+    let newAnimal: AnimalSelf;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).treat(elm);
+    }
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).treat(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).treat(elm);
+    };
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
@@ -154,14 +173,24 @@ function onClickTreatButton(elm: AnimalSelf) {
     renderAnimals();
 };
 function onClickPlayButton(elm: AnimalSelf) {
-    if (elm.food === 0) {
-        killAnimal(elm);
-        return;
+    let newAnimal: AnimalSelf;
+    if (elm.age > -1 && elm.age < 6) {
+        newAnimal = new Context(new StrategyForAnimal0_5).play(elm);
     }
-    let newAnimal: AnimalSelf = new AnyAnimal(elm).play();
+    else if (elm.age > 5 && elm.age < 10) {
+        newAnimal = new Context(new StrategyForAnimal6_10).play(elm);
+    }
+    else {
+        newAnimal = new Context(new StrategyForAnimal10_more).play(elm);
+    };
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
+    if (newAnimal.food <= 0) {
+        killAnimal(newAnimal);
+        return;
+    };
+    console.log(newAnimal);
     localStorage.setItem('animals', JSON.stringify(a));
     renderAnimals();
 };
@@ -173,13 +202,13 @@ function killAnimal(animal: AnimalSelf) {
     for (let index = 0; index < animalList.length; index++) {
         if (animalList[index].id === animal.id) {
             animalIndex = index;
-        }
-    }
+        };
+    };
     if (animalIndex > -1) {
         animalList.splice(animalIndex, 1);
         localStorage.setItem(ANIMALS, JSON.stringify(animalList));
-    }
+    };
     if (animal) {
         document.getElementById(animalId)!.remove();
-    }
-}
+    };
+};
