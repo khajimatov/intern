@@ -3,18 +3,16 @@ var ANIMALS = "animals";
 !localStorage.getItem(ANIMALS) && localStorage.setItem(ANIMALS, JSON.stringify([]));
 var animalList = JSON.parse(localStorage.animals);
 window.onload = function () {
-    document.querySelectorAll('.animal').forEach(function (elm) {
-        elm.addEventListener('click', function () { onClickAnimal(elm); });
-    });
     renderAnimals();
-    // ----------------- EXPERIMENT WITH MODAL WINDOWS ----------------------
+    document.querySelectorAll('.animal').forEach(function (elm) {
+        elm.addEventListener('click', function (event) { onClickAnimal(event); });
+    });
     var modal = document.getElementById("myModal");
     window.onclick = function (event) {
         if (event.target == modal) {
-            onClickCancelModal(modal);
+            onClickCancelModal();
         }
     };
-    // END OF EXPERIMENT
 };
 function addAnimalToStorage(elmId, animalName, animalAge) {
     parseInt(animalAge);
@@ -26,59 +24,44 @@ function addAnimalToStorage(elmId, animalName, animalAge) {
     renderAnimals();
 }
 ;
-function onClickAnimal(elm) {
-    document.querySelectorAll('.animal').forEach(function (elm) { elm.style.opacity = ''; });
-    elm.style.opacity = '50%';
+function onClickAnimal(e) {
+    var currentAnimal = e.target;
+    document.querySelectorAll('.animal').forEach(function (elm) {
+        elm.classList.remove('clicked');
+    });
+    currentAnimal.classList.toggle('clicked');
     var button = document.getElementById('addAnimalButton');
     if (button) {
-        button.textContent = "Add ".concat(elm.id);
-        button.addEventListener('click', function () { return openModal(elm.id, elm.textContent); });
+        button.textContent = "Add ".concat(currentAnimal.id);
+        button.addEventListener('click', openModal);
     }
     ;
 }
 ;
-function openModal(elmId, elmText) {
+var openModal = function (e) {
+    document.getElementById('addAnimalButton').removeEventListener('click', openModal);
+    var currentAnimal = e.target;
+    var animalType = currentAnimal.textContent.split(' ')[1];
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
-    modal.querySelector('h3').textContent = 'You are adding a ' + elmId + ' ' + elmText;
-    modal.querySelector('.cancelButton').addEventListener('click', function () { return onClickCancelModal(modal); });
-    inputValidation();
-    modal.querySelector('#addAnimalSubmitButton').addEventListener('click', function () { return addAnimalSubmitButton(elmId); });
-}
-;
-function onClickCancelModal(modal) {
-    modal.style.display = "none";
-    document.querySelectorAll('.animal').forEach(function (elm) { elm.style.opacity = ''; });
+    modal.querySelector('h3').textContent = 'You are adding a ' + animalType;
+    modal.querySelector('.cancelButton').addEventListener('click', onClickCancelModal);
+    modal.querySelector('#addAnimalSubmitButton').addEventListener('click', addAnimalSubmitButton);
+    modal.querySelector('#addAnimalSubmitButton').classList.add(animalType);
+};
+var onClickCancelModal = function () {
+    document.querySelector('.modal').style.display = "none";
+    document.querySelectorAll('.animal').forEach(function (elm) { elm.classList.remove('clicked'); });
     document.getElementById('addAnimalButton').textContent = 'Click on animal to add';
-    // document.getElementById('addAnimalButton')?.removeEventListener()
-}
-;
-function inputValidation() {
-    document.getElementById('animalName').addEventListener('change', function (e) {
-        var animalNameInput = e.target.value;
-        if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
-            document.getElementById('animalNameWarning').style.display = "none";
-            console.log(animalNameInput);
-        }
-        else {
-            document.getElementById('animalNameWarning').style.display = "block";
-        }
-        ;
-    });
-    document.getElementById('animalAge').addEventListener('change', function (e) {
-        var animalAgeInput = e.target.value;
-        if (/^[0-9]+$/.test(animalAgeInput) === true) {
-            document.getElementById('animalAgeWarning').style.display = "none";
-            console.log(animalAgeInput);
-        }
-        else {
-            document.getElementById('animalAgeWarning').style.display = "block";
-        }
-        ;
-    });
-}
-;
-function addAnimalSubmitButton(elmId) {
+    document.querySelector('.cancelButton').removeEventListener('click', onClickCancelModal);
+    document.getElementById('addAnimalButton').removeEventListener('click', openModal);
+    document.querySelector('#animalName').value = '';
+    document.querySelector('#animalAge').value = '';
+};
+var addAnimalSubmitButton = function (e) {
+    var animalType = e.target.classList[1];
+    console.log(e.target.classList[1]);
+    e.target.classList.remove(animalType);
     var animalNameInput = document.querySelector('#animalName').value;
     var animalAgeInput = document.querySelector('#animalAge').value;
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
@@ -96,14 +79,13 @@ function addAnimalSubmitButton(elmId) {
     }
     ;
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
-        addAnimalToStorage(elmId, document.querySelector('#animalName').value, document.querySelector('#animalAge').value);
+        addAnimalToStorage(animalType, document.querySelector('#animalName').value, document.querySelector('#animalAge').value);
         document.querySelector('#animalName').value = '';
         document.querySelector('#animalAge').value = '';
-        onClickCancelModal(document.getElementById('myModal'));
+        onClickCancelModal();
     }
     ;
-}
-;
+};
 function renderAnimals() {
     var animalList = JSON.parse(localStorage.animals);
     var container = document.getElementById('container');

@@ -110,8 +110,6 @@ var Dog = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.type = "dog";
         return _this;
-        // public name: string = "Dog";
-        // public age: number = Math.floor(Math.random() * 20) + 1;
     }
     return Dog;
 }(SomeAnimal));
@@ -122,8 +120,6 @@ var Chicken = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.type = "chicken";
         return _this;
-        // public name: string = "Chicken";
-        // public age: number = Math.floor(Math.random() * 20) + 1;
     }
     return Chicken;
 }(SomeAnimal));
@@ -134,8 +130,6 @@ var Turtle = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.type = "turtle";
         return _this;
-        // public name: string = "Turtle";
-        // public age: number = Math.floor(Math.random() * 20) + 1;
     }
     return Turtle;
 }(SomeAnimal));

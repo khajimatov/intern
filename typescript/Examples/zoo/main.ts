@@ -4,15 +4,16 @@ const ANIMALS: string = "animals";
 let animalList: Object[] = JSON.parse(localStorage.animals);
 
 window.onload = () => {
-    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => {
-        elm.addEventListener('click', () => { onClickAnimal(elm) });
-    });
     renderAnimals();
+
+    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => {
+        elm.addEventListener('click', (event) => { onClickAnimal(event) });
+    });
 
     let modal = document.getElementById("myModal")!;
     window.onclick = function (event) {
         if (event.target == modal) {
-            onClickCancelModal(modal);
+            onClickCancelModal();
         }
     }
 
@@ -28,57 +29,46 @@ function addAnimalToStorage(elmId: string, animalName: string, animalAge: string
     renderAnimals();
 };
 
-function onClickAnimal(elm: HTMLElement) {
-    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => { elm.style.opacity = ''; });
-    elm.style.opacity = '50%';
+function onClickAnimal(e: Event) {
+    let currentAnimal = (<HTMLElement>e.target);
+    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => {
+        elm.classList.remove('clicked');
+    });
+    currentAnimal.classList.toggle('clicked');
     let button = document.getElementById('addAnimalButton');
     if (button) {
-        button.textContent = `Add ${elm.id}`;
-        button.addEventListener('click', () => openModal(elm.id, elm.textContent!));
+        button.textContent = `Add ${currentAnimal.id}`;
+        button.addEventListener('click', openModal);
     };
-
 };
 
-function openModal(elmId: string, elmText: string) {
+const openModal = function (e: Event) {
+    document.getElementById('addAnimalButton')!.removeEventListener('click', openModal);
+    let currentAnimal = (<HTMLElement>e.target);
+    let animalType: string = currentAnimal.textContent!.split(' ')[1];
     let modal = document.getElementById("myModal")!;
     modal.style.display = "block";
-    modal.querySelector('h3')!.textContent = 'You are adding a ' + elmId + ' ' + elmText;
-    modal.querySelector('.cancelButton')!.addEventListener('click', () => onClickCancelModal(modal));
-    inputValidation();
-    modal.querySelector<HTMLElement>('#addAnimalSubmitButton')!.addEventListener('click', () => addAnimalSubmitButton(elmId));
+    modal.querySelector('h3')!.textContent = 'You are adding a ' + animalType;
+    modal.querySelector('.cancelButton')!.addEventListener('click', onClickCancelModal);
+    modal.querySelector<HTMLElement>('#addAnimalSubmitButton')!.addEventListener('click', addAnimalSubmitButton);
+    modal.querySelector<HTMLElement>('#addAnimalSubmitButton')!.classList.add(animalType);
 };
 
-function onClickCancelModal(modal: HTMLElement) {
-    modal.style.display = "none";
-    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => { elm.style.opacity = ''; });
+const onClickCancelModal = function () {
+    document.querySelector<HTMLElement>('.modal')!.style.display = "none";
+    document.querySelectorAll<HTMLElement>('.animal').forEach(elm => { elm.classList.remove('clicked'); });
     document.getElementById('addAnimalButton')!.textContent = 'Click on animal to add';
-
+    document.querySelector('.cancelButton')!.removeEventListener('click', onClickCancelModal);
+    document.getElementById('addAnimalButton')!.removeEventListener('click', openModal);
+    document.querySelector<HTMLInputElement>('#animalName')!.value = '';
+    document.querySelector<HTMLInputElement>('#animalAge')!.value = '';
 };
 
-function inputValidation() {
-    document.getElementById('animalName')!.addEventListener('change', (e) => {
-        let animalNameInput: string = (<HTMLInputElement>e.target).value;
-        if (/^[a-zA-Z]+$/.test(animalNameInput) === true) {
-            document.getElementById('animalNameWarning')!.style.display = "none";
-            console.log(animalNameInput);
-        }
-        else {
-            document.getElementById('animalNameWarning')!.style.display = "block";
-        };
-    });
-    document.getElementById('animalAge')!.addEventListener('change', (e) => {
-        let animalAgeInput: string = (<HTMLInputElement>e.target).value;
-        if (/^[0-9]+$/.test(animalAgeInput) === true) {
-            document.getElementById('animalAgeWarning')!.style.display = "none";
-            console.log(animalAgeInput);
-        }
-        else {
-            document.getElementById('animalAgeWarning')!.style.display = "block";
-        };
-    });
-};
+const addAnimalSubmitButton = function (e: Event) {
+    let animalType = (<HTMLElement>e.target).classList[1];
+    console.log((<HTMLElement>e.target).classList[1]);
+    (<HTMLElement>e.target).classList.remove(animalType);
 
-function addAnimalSubmitButton(elmId: string) {
     let animalNameInput: string = document.querySelector<HTMLInputElement>('#animalName')!.value;
     let animalAgeInput: string = document.querySelector<HTMLInputElement>('#animalAge')!.value;
 
@@ -96,10 +86,10 @@ function addAnimalSubmitButton(elmId: string) {
     };
 
     if (/^[a-zA-Z]+$/.test(animalNameInput) === true && /^[0-9]+$/.test(animalAgeInput) === true) {
-        addAnimalToStorage(elmId, document.querySelector<HTMLInputElement>('#animalName')!.value, document.querySelector<HTMLInputElement>('#animalAge')!.value);
+        addAnimalToStorage(animalType, document.querySelector<HTMLInputElement>('#animalName')!.value, document.querySelector<HTMLInputElement>('#animalAge')!.value);
         document.querySelector<HTMLInputElement>('#animalName')!.value = '';
         document.querySelector<HTMLInputElement>('#animalAge')!.value = '';
-        onClickCancelModal(document.getElementById('myModal')!);
+        onClickCancelModal();
     };
 };
 
