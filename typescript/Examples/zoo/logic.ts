@@ -19,13 +19,14 @@ abstract class SomeAnimal implements Animal {
     public age: number;
     public happiness: number;
     public health: number;
-    public abstract type: string;
+    public type: string;
     public constructor(private elm: AnimalSelf) {
         this.name = elm.name;
         this.age = elm.age;
         this.food = elm.food;
         this.happiness = elm.happiness;
         this.health = elm.health;
+        this.type = elm.type;
     };
     public feed(): AnimalSelf {
         this.elm.food += 1;
@@ -77,6 +78,8 @@ class TurtleFabric extends Fabric {
     };
 };
 
+class AnyAnimal extends SomeAnimal {
+}
 class Dog extends SomeAnimal {
     public type: string = "dog";
 };

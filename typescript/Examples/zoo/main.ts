@@ -112,6 +112,7 @@ function createHTMLElements(elm: AnimalSelf, container: HTMLElement) {
     let treatButton = document.createElement('button');
     let playButton = document.createElement('button');
     div.setAttribute('class', 'animalCard ' + elm.type);
+    div.setAttribute('id', elm.id!.toString());
     if (elm.type === 'dog') {
         h3.textContent = '🐕';
     } else if (elm.type === 'chicken') {
@@ -139,20 +140,7 @@ function createHTMLElements(elm: AnimalSelf, container: HTMLElement) {
 };
 
 function onClickFeedButton(elm: AnimalSelf) {
-    let newAnimal: AnimalSelf;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new Dog(elm).feed();
-            break;
-        case 'chicken':
-            newAnimal = new Chicken(elm).feed();
-            break;
-        case 'turtle':
-            newAnimal = new Turtle(elm).feed();
-            break;
-        default:
-            break;
-    };
+    let newAnimal: AnimalSelf = new AnyAnimal(elm).feed();
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
@@ -160,20 +148,7 @@ function onClickFeedButton(elm: AnimalSelf) {
     renderAnimals();
 };
 function onClickTreatButton(elm: AnimalSelf) {
-    let newAnimal: AnimalSelf;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new Dog(elm).treat();
-            break;
-        case 'chicken':
-            newAnimal = new Chicken(elm).treat();
-            break;
-        case 'turtle':
-            newAnimal = new Turtle(elm).treat();
-            break;
-        default:
-            break;
-    };
+    let newAnimal: AnimalSelf = new AnyAnimal(elm).treat();
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
@@ -181,23 +156,32 @@ function onClickTreatButton(elm: AnimalSelf) {
     renderAnimals();
 };
 function onClickPlayButton(elm: AnimalSelf) {
-    let newAnimal: AnimalSelf;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new Dog(elm).play();
-            break;
-        case 'chicken':
-            newAnimal = new Chicken(elm).play();
-            break;
-        case 'turtle':
-            newAnimal = new Turtle(elm).play();
-            break;
-        default:
-            break;
-    };
+    if (elm.food === 0) {
+        killAnimal(elm);
+        return;
+    }
+    let newAnimal: AnimalSelf = new AnyAnimal(elm).play();
     newAnimal!.id = elm.id;
     let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
     let a: AnimalSelf[] = animalList.map(obj => (obj.id === newAnimal.id && newAnimal) || obj);
     localStorage.setItem('animals', JSON.stringify(a));
     renderAnimals();
 };
+
+function killAnimal(animal: AnimalSelf) {
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
+    let animalId = (animal.id)!.toString();
+    let animalIndex = 0;
+    for (let index = 0; index < animalList.length; index++) {
+        if (animalList[index].id === animal.id) {
+            animalIndex = index;
+        }
+    }
+    if (animalIndex > -1) {
+        animalList.splice(animalIndex, 1);
+        localStorage.setItem(ANIMALS, JSON.stringify(animalList));
+    }
+    if (animal) {
+        document.getElementById(animalId)!.remove();
+    }
+}

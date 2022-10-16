@@ -105,6 +105,7 @@ function createHTMLElements(elm, container) {
     var treatButton = document.createElement('button');
     var playButton = document.createElement('button');
     div.setAttribute('class', 'animalCard ' + elm.type);
+    div.setAttribute('id', elm.id.toString());
     if (elm.type === 'dog') {
         h3.textContent = '🐕';
     }
@@ -137,21 +138,7 @@ function createHTMLElements(elm, container) {
 }
 ;
 function onClickFeedButton(elm) {
-    var newAnimal;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().feed();
-            break;
-        case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().feed();
-            break;
-        case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().feed();
-            break;
-        default:
-            break;
-    }
-    ;
+    var newAnimal = new AnyAnimal(elm).feed();
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
@@ -160,21 +147,7 @@ function onClickFeedButton(elm) {
 }
 ;
 function onClickTreatButton(elm) {
-    var newAnimal;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().treat();
-            break;
-        case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().treat();
-            break;
-        case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().treat();
-            break;
-        default:
-            break;
-    }
-    ;
+    var newAnimal = new AnyAnimal(elm).treat();
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
@@ -183,21 +156,11 @@ function onClickTreatButton(elm) {
 }
 ;
 function onClickPlayButton(elm) {
-    var newAnimal;
-    switch (elm.type) {
-        case 'dog':
-            newAnimal = new DogFabric(elm).factoryMethod().play();
-            break;
-        case 'chicken':
-            newAnimal = new ChickenFabric(elm).factoryMethod().play();
-            break;
-        case 'turtle':
-            newAnimal = new TurtleFabric(elm).factoryMethod().play();
-            break;
-        default:
-            break;
+    if (elm.food === 0) {
+        killAnimal(elm);
+        return;
     }
-    ;
+    var newAnimal = new AnyAnimal(elm).play();
     newAnimal.id = elm.id;
     var animalList = JSON.parse(localStorage.animals);
     var a = animalList.map(function (obj) { return (obj.id === newAnimal.id && newAnimal) || obj; });
@@ -205,3 +168,20 @@ function onClickPlayButton(elm) {
     renderAnimals();
 }
 ;
+function killAnimal(animal) {
+    var animalList = JSON.parse(localStorage.animals);
+    var animalId = (animal.id).toString();
+    var animalIndex = 0;
+    for (var index = 0; index < animalList.length; index++) {
+        if (animalList[index].id === animal.id) {
+            animalIndex = index;
+        }
+    }
+    if (animalIndex > -1) {
+        animalList.splice(animalIndex, 1);
+        localStorage.setItem(ANIMALS, JSON.stringify(animalList));
+    }
+    if (animal) {
+        document.getElementById(animalId).remove();
+    }
+}

@@ -23,6 +23,7 @@ var SomeAnimal = /** @class */ (function () {
         this.food = elm.food;
         this.happiness = elm.happiness;
         this.health = elm.health;
+        this.type = elm.type;
     }
     ;
     SomeAnimal.prototype.feed = function () {
@@ -104,6 +105,13 @@ var TurtleFabric = /** @class */ (function (_super) {
     return TurtleFabric;
 }(Fabric));
 ;
+var AnyAnimal = /** @class */ (function (_super) {
+    __extends(AnyAnimal, _super);
+    function AnyAnimal() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AnyAnimal;
+}(SomeAnimal));
 var Dog = /** @class */ (function (_super) {
     __extends(Dog, _super);
     function Dog() {
