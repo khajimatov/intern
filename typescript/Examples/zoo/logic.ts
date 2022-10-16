@@ -79,16 +79,10 @@ class TurtleFabric extends Fabric {
 
 class Dog extends SomeAnimal {
     public type: string = "dog";
-    // public name: string = "Dog";
-    // public age: number = Math.floor(Math.random() * 20) + 1;
 };
 class Chicken extends SomeAnimal {
     public type: string = "chicken";
-    // public name: string = "Chicken";
-    // public age: number = Math.floor(Math.random() * 20) + 1;
 };
 class Turtle extends SomeAnimal {
     public type: string = "turtle";
-    // public name: string = "Turtle";
-    // public age: number = Math.floor(Math.random() * 20) + 1;
 };

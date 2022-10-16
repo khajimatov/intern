@@ -9,14 +9,12 @@ window.onload = () => {
     });
     renderAnimals();
 
-    // ----------------- EXPERIMENT WITH MODAL WINDOWS ----------------------
     let modal = document.getElementById("myModal")!;
     window.onclick = function (event) {
         if (event.target == modal) {
             onClickCancelModal(modal);
         }
     }
-    // END OF EXPERIMENT
 
 };
 
@@ -54,7 +52,6 @@ function onClickCancelModal(modal: HTMLElement) {
     modal.style.display = "none";
     document.querySelectorAll<HTMLElement>('.animal').forEach(elm => { elm.style.opacity = ''; });
     document.getElementById('addAnimalButton')!.textContent = 'Click on animal to add';
-    // document.getElementById('addAnimalButton')?.removeEventListener()
 
 };
 
