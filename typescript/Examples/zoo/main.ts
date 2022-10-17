@@ -2,7 +2,6 @@
 /// <reference path="strategy.ts" />
 const ANIMALS: string = "animals";
 !localStorage.getItem(ANIMALS) && localStorage.setItem(ANIMALS, JSON.stringify([]));
-let animalList: Object[] = JSON.parse(localStorage.animals);
 
 window.onload = () => {
     renderAnimals();
@@ -21,6 +20,7 @@ window.onload = () => {
 };
 
 function addAnimalToStorage(elmId: string, animalName: string, animalAge: string) {
+    let animalList: Object[] = JSON.parse(localStorage.animals);
     parseInt(animalAge);
     const animalType: string = elmId;
     const animal: Object = { "id": Date.now(), "name": animalName, "age": animalAge, "type": animalType, "food": 0, "happiness": 0, "health": 0 };
@@ -93,7 +93,7 @@ const addAnimalSubmitButton = function (e: Event) {
 };
 
 function renderAnimals() {
-    let animalList: AnimalSelf[] = JSON.parse(localStorage.animals);
+    let animalList: AnimalSelf[] = JSON.parse(localStorage.getItem('animals')!);
     let container = document.getElementById('container')!;
     container.innerHTML = '';
     animalList.map(elm => {
@@ -211,4 +211,5 @@ function killAnimal(animal: AnimalSelf) {
     if (animal) {
         document.getElementById(animalId)!.remove();
     };
+    renderAnimals();
 };

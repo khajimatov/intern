@@ -2,7 +2,6 @@
 /// <reference path="strategy.ts" />
 var ANIMALS = "animals";
 !localStorage.getItem(ANIMALS) && localStorage.setItem(ANIMALS, JSON.stringify([]));
-var animalList = JSON.parse(localStorage.animals);
 window.onload = function () {
     renderAnimals();
     document.querySelectorAll('.animal').forEach(function (elm) {
@@ -17,6 +16,7 @@ window.onload = function () {
     };
 };
 function addAnimalToStorage(elmId, animalName, animalAge) {
+    var animalList = JSON.parse(localStorage.animals);
     parseInt(animalAge);
     var animalType = elmId;
     var animal = { "id": Date.now(), "name": animalName, "age": animalAge, "type": animalType, "food": 0, "happiness": 0, "health": 0 };
@@ -88,7 +88,7 @@ var addAnimalSubmitButton = function (e) {
     ;
 };
 function renderAnimals() {
-    var animalList = JSON.parse(localStorage.animals);
+    var animalList = JSON.parse(localStorage.getItem('animals'));
     var container = document.getElementById('container');
     container.innerHTML = '';
     animalList.map(function (elm) {
@@ -221,5 +221,6 @@ function killAnimal(animal) {
         document.getElementById(animalId).remove();
     }
     ;
+    renderAnimals();
 }
 ;
