@@ -2,7 +2,9 @@
 
 > ugly UI version.
 
----
+***
+
+## The assignment:
 
 Write a client application for chat on websocket. When entering the chat room, all users who are currently online should be displayed. When a new user enters the chat, all clients receive a message that so-and-so user is logged in. He must be added to the list of active users. When the user leaves - the message about leaving is also removed from the list.
 
