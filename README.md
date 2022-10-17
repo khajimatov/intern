@@ -1,8 +1,10 @@
 ## to-learn:
-- энкапсуляция
-- полиморфизм
-- наследование
+- [ ] Encapsulation
+- [ ] Polymorphism
+- [ ] Inheritance
 - Design Patterns
   - Facade
   - Strategy
+  - Fabric
 - TypeScript
+- WebSockets
