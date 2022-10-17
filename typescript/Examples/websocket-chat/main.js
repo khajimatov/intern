@@ -51,6 +51,19 @@ window.onload = function () {
                 newMessage.textContent = data.message.username + ' ' + data.message.text;
                 document.getElementById('messages-list').appendChild(newMessage);
                 break;
+            case 'USER_LOGGED_OUT':
+                var leftUsername = data.username;
+                var lis = document.querySelectorAll('li');
+                for (var i = 0; i < lis.length; i++) {
+                    console.log(lis[i]);
+                    if (lis[i].textContent === leftUsername) {
+                        console.log(lis[i]);
+                        lis[i].parentNode.removeChild(lis[i]);
+                    }
+                    ;
+                }
+                ;
+                break;
         }
         ;
     };

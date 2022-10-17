@@ -1,8 +1,10 @@
 window.onload = () => {
     let socket = new WebSocket('ws://159.69.30.195:8001/chat');
+
     socket.onopen = function (e) {
         document.getElementById('my-status')!.textContent = "ONLINE";
     };
+
     socket.onmessage = function (event) {
         let data = JSON.parse(event.data);
         switch (data.type) {
@@ -45,6 +47,17 @@ window.onload = () => {
                 newMessage.textContent = data.message.username + ' ' + data.message.text;
                 document.getElementById('messages-list')!.appendChild(newMessage);
                 break;
+            case 'USER_LOGGED_OUT':
+                let leftUsername = data.username;
+                let lis = document.querySelectorAll('li');
+                for (let i = 0; i < lis.length; i++) {
+                    console.log(lis[i]);
+                    if (lis[i].textContent === leftUsername) {
+                        console.log(lis[i]);
+                        lis[i].parentNode!.removeChild(lis[i]);
+                    };
+                };
+                break;
         };
 
     };
@@ -66,4 +79,3 @@ window.onload = () => {
 
     document.getElementById('new-user-button')!.addEventListener('click', sendUsername);
 };
-
