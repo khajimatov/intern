@@ -10,7 +10,7 @@ Write a client application for chat on websocket. When entering the chat room, a
 
 At each entry into the chat you need to display a form with the possibility of entering the username, after that all customers receive a message that the user is in the chat, he appears in the list of active users and gets the opportunity to send a message. The page should display the appropriate form. Free design
 
-Base url: 159.69.30.195:8001
+Base url: [REDACTED]
 WS endpoint: /chat
 
 On connect message:
