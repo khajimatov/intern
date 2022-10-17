@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket-Chat</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>WebSocket-Chat</h1>
+        <h3>My status: <span id="my-status"></span></h3>
+        <div class="chat">
+            <section class="connected-users">
+                <span id="connected-users-title">Connected Users</span>
+                <ol id="connected-users-list">
+                </ol>
+            </section>
+            <section class="messages">
+                <form id="new-user-form">
+                    <label for="new-user-name" id="new-user-label"></label><br>
+                    <input type="text" name="new-user-name" id="new-user-name">
+                    <input type="button" value="Send" name="new-user-button" id="new-user-button">
+                </form>
+            </section>
+        </div>
+    </div>
+    <div id="messages-list">messages</div>
+    <div id="create-message">
+        <h2>create-message</h2>
+        <form name="createMessageForm" id="create-message-form">
+            <label for="create-message-text" id="create-message-label">Send message</label><br>
+            <input type="text" name="create-message-text" id="create-message-text">
+            <input type="button" value="Send" name="create-message-button" id="create-message-button">
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    background-color: #1b1b1b;
+    font-family: 'Helvetica';
+    color: #fff;
+}
+
+.wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    border: 1px solid #fff;
+    height: fit-content;
+    padding: 20px;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+.chat {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.chat form {
+    display: none;
+}
+
+#create-message {
+    display: none;
+}
